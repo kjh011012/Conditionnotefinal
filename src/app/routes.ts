@@ -94,6 +94,13 @@ import { VillageRoom } from './pages/village/VillageRoom';
 import { VillageNotices } from './pages/village/VillageNotices';
 import { VillageInquiry } from './pages/village/VillageInquiry';
 import { VillageCompletion } from './pages/village/VillageCompletion';
+// Elder mode (어르신 모드)
+import { ElderLayout } from './components/layout/ElderLayout';
+import { ElderHome } from './pages/elder/ElderHome';
+import { ElderCheck } from './pages/elder/ElderCheck';
+import { ElderReport } from './pages/elder/ElderReport';
+import { ElderExplore } from './pages/elder/ElderExplore';
+import { ElderMore } from './pages/elder/ElderMore';
 // Referral
 import { ReferralCategoryList } from './pages/referral/ReferralCategoryList';
 import { PreVisitChecklist } from './pages/referral/PreVisitChecklist';
@@ -244,6 +251,19 @@ export const router = createBrowserRouter([
           { path: 'data-stats', Component: AdminDataStats },
           { path: 'check-review', Component: AdminCheckReview },
           { path: 'analytics', Component: AdminDashboard },
+        ],
+      },
+
+      // === Elder mode (어르신 모드) ===
+      {
+        path: 'elder',
+        Component: ElderLayout,
+        children: [
+          { index: true, Component: ElderHome },
+          { path: 'check', Component: ElderCheck },
+          { path: 'report', Component: ElderReport },
+          { path: 'explore', Component: ElderExplore },
+          { path: 'more', Component: ElderMore },
         ],
       },
     ],

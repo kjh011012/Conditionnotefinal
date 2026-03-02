@@ -20,14 +20,14 @@ const menuItems = [
 ];
 
 const modeConfig: Record<UserMode, { label: string; icon: any; desc: string }> = {
-  participant: { label: '참가자', icon: User, desc: '기록 · 추천 · 리포트 · 캠프 예약' },
+  participant: { label: '���가자', icon: User, desc: '기록 · 추천 · 리포트 · 캠프 예약' },
   guardian: { label: '보호자', icon: Shield, desc: '오늘 요약 · 리포트 확인 (읽기 전용)' },
   coordinator: { label: '코디네이터', icon: ClipboardList, desc: '캠프 운영 · 체크리포트 · 세션 진행' },
   admin: { label: '관리자', icon: Settings, desc: '프로그램 · 식단 · 숙소 · 운영 총괄' },
 };
 
 export function MorePage() {
-  const { mode, setMode } = useAppContext();
+  const { mode, setMode, elderMode, setElderMode } = useAppContext();
   const navigate = useNavigate();
   const [showModeSheet, setShowModeSheet] = useState(false);
   const [showAccessibility, setShowAccessibility] = useState(false);
@@ -129,9 +129,44 @@ export function MorePage() {
           <div className="w-full max-w-[430px] bg-white rounded-t-[20px] p-5" onClick={e => e.stopPropagation()}>
             <div className="w-10 h-1 bg-[#E5E7EB] rounded-full mx-auto mb-4" />
             <h3 className="text-[18px] text-[#111827] mb-5">접근성 설정</h3>
+
+            {/* 어르신 모드 (큰글씨 + 간편 모드 통합) */}
+            <div className="bg-[#FFFBEB] rounded-[16px] p-4 mb-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <span className="text-[24px]">👴</span>
+                  <div>
+                    <span className="text-[16px] text-[#111827] block">어르신 모드</span>
+                    <span className="text-[12px] text-[#6B7280]">큰 글씨 · 간편 화면 · 직관 체크</span>
+                  </div>
+                </div>
+                <button
+                  onClick={() => {
+                    const next = !elderMode;
+                    setElderMode(next);
+                    if (next) {
+                      setShowAccessibility(false);
+                      navigate('/elder');
+                    }
+                  }}
+                  className={`w-14 h-8 rounded-full transition-colors ${elderMode ? 'bg-[#1B7A4B]' : 'bg-[#E5E7EB]'} relative`}
+                >
+                  <div className={`w-6 h-6 rounded-full bg-white shadow absolute top-1 transition-transform ${elderMode ? 'translate-x-7' : 'translate-x-1'}`} />
+                </button>
+              </div>
+              {elderMode && (
+                <p className="text-[11px] text-[#92400E] mt-2" style={{ lineHeight: 1.5 }}>
+                  어르신 모드가 켜져 있어요. 홈 · 체크 · 리포트가 간편 화면으로 전환됩니다.
+                </p>
+              )}
+            </div>
+
+            <div className="h-px bg-[#E5E7EB] mb-3" />
+            <span className="text-[13px] text-[#6B7280] block mb-3">개별 접근성 옵션</span>
+
             {[
-              { label: '큰 글씨', desc: '본문 18pt, 제목 24pt로 확대', value: largeText, toggle: () => setLargeText(!largeText) },
-              { label: '간편 모드', desc: '카드 축소, 라벨 중심, CTA 1개 강화', value: simpleMode, toggle: () => setSimpleMode(!simpleMode) },
+              { label: '큰 글씨 (일반모드)', desc: '본문 18pt, 제목 24pt로 확대', value: false, toggle: () => {} },
+              { label: '음성 안내', desc: '주요 화면 음성 가이드 (준비중)', value: false, toggle: () => {} },
             ].map(item => (
               <div key={item.label} className="flex items-center justify-between py-3 border-b border-[#EEF1F4] last:border-0">
                 <div>

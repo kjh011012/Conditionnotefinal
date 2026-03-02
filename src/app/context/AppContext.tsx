@@ -15,6 +15,9 @@ interface AppContextType {
   /** 공유 동의 범위 */
   shareScope: 'risk_only' | 'summary' | 'detail';
   setShareScope: (s: 'risk_only' | 'summary' | 'detail') => void;
+  /** 어르신 모드 */
+  elderMode: boolean;
+  setElderMode: (v: boolean) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -22,6 +25,7 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 export function AppProvider({ children }: { children: ReactNode }) {
   const [mode, setMode] = useState<UserMode>('participant');
   const [shareScope, setShareScope] = useState<'risk_only' | 'summary' | 'detail'>('summary');
+  const [elderMode, setElderMode] = useState(false);
 
   return (
     <AppContext.Provider
@@ -36,6 +40,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
         campPeriod: '2026.03.10 ~ 2026.03.20',
         shareScope,
         setShareScope,
+        elderMode,
+        setElderMode,
       }}
     >
       {children}
